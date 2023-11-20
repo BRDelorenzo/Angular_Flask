@@ -20,7 +20,7 @@ export class AdicionarContratoComponent implements OnInit {
   ){
 
     this.angForm = this.fb.group({
-      numeroContrato: ['',Validators.required],
+      Contrato: ['',Validators.required],
       dtInicio:['',Validators.required],
 
     })
@@ -32,11 +32,11 @@ export class AdicionarContratoComponent implements OnInit {
 
   postdata(forms:any){
       this.contratoService.addContrato(
-      this.angForm.value.numeroContrato,
+      this.angForm.value.Contrato,
       this.angForm.value.dtInicio,
       ).pipe(first()).subscribe(data =>{
         this.route.navigate(['lista-contrato'])
-
+      },error => {
       });
   }
 }

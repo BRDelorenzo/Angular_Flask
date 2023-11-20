@@ -17,9 +17,9 @@ export class ContratosService {
   constructor(private httpClient : HttpClient) {}
 
   public addContrato(
-    numeroContrato:any,dtInicio:any
+    Contrato:any,dtInicio:any
   ){
-    return this.httpClient.post<any>(this.baseUrl+'contratos',{numeroContrato,dtInicio})
+    return this.httpClient.post<any>(this.baseUrl+'contratos',{Contrato,dtInicio})
     .pipe(map((Contratos:any) => {
       return Contratos;
     }))

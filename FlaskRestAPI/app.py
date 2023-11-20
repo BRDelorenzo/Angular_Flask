@@ -1,7 +1,7 @@
 from flask import Flask,request
 from flask_restful import Api,Resource,reqparse
 from models import ProductModel, db
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 
@@ -24,14 +24,21 @@ class contratosView(Resource):
 
     def get(self):
         contratos = ProductModel.query.all()
-        return {'Contratos':list(x.json() for x in contratos)}
+        return {'Contrato':list(x.json() for x in contratos)}
+    #def post(self):
+    #    data = request.get_json()
+    #    new_contrato = ProductModel(data['Contrato'],data['dtInicio'])
+    #    db.session.add(new_contrato)
+    #    db.session.commit()
+    #    db.session.flush()
+    #    return new_contrato.json
     def post(self):
         data = request.get_json()
-        new_contrato = ProductModel(data['Contrato'],data['dtInicio'])
+        new_contrato = ProductModel(data['Contrato'], data['dtInicio'])
         db.session.add(new_contrato)
         db.session.commit()
         db.session.flush()
-        return new_contrato.json,201
+        return new_contrato.json(), 201
     
 class ContratoUnico(Resource):
 
@@ -50,20 +57,34 @@ class ContratoUnico(Resource):
         else:
             return{'message':'Product not found'},404
     
-    def put(self,id):
+    #def put(self,id):
+    #    data = request.get_json()
+    #    contrato = ProductModel.query.filter_by(id = id).first()
+    #
+    #    if contrato:
+    #        contrato.Contrato = data["Contrato"]
+    #        contrato.dtInicio = data["dtInicio"]
+    #    
+    #    else:
+    #        contrato = ProductModel(id=id,**data)
+    #    
+    #    db.session.add(contrato)
+    #    db.session.commit()
+    #    return contrato.json, 201
+    
+    def put(self, id):
         data = request.get_json()
-        contrato = ProductModel.query.filter_by(id = id).first()
+        contrato = ProductModel.query.filter_by(id=id).first()
 
         if contrato:
             contrato.Contrato = data["Contrato"]
             contrato.dtInicio = data["dtInicio"]
-        
         else:
-            contrato = ProductModel(id=id,**data)
-        
+            contrato = ProductModel(id=id, **data)
+
         db.session.add(contrato)
         db.session.commit()
-        return contrato.json
+        return contrato.json(), 201  # Adicione os parênteses após json
 
 api.add_resource(contratosView,'/contratos')
 api.add_resource(ContratoUnico,'/contrato/<int:id>')
