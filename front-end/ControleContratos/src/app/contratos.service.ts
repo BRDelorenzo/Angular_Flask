@@ -24,4 +24,8 @@ export class ContratosService {
       return Contratos;
     }))
   }
+
+  public listContratos(){
+    return this.httpClient.get<Contratos[]>(this.baseUrl+'contratos')
+  }
 }
